@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { days, latestDay, meta, monthly, formatCurrency, formatNumber, ratio } from '../data/motoristaops';
+
+const sortedDays = [...days].sort((a, b) => b.date.localeCompare(a.date));
+const previousDay = sortedDays.find((day) => day.date !== latestDay.date);
+const profitDelta = previousDay ? latestDay.profit - previousDay.profit : 0;
+const kmEmpty = latestDay.passengerKm ? latestDay.km - latestDay.passengerKm : null;
+const rideOccupancy = ratio(latestDay.passengerKm, latestDay.km);
+
+const kpis = [
+  { label: 'Receita bruta', value: formatCurrency(monthly.gross), note: 'Julho/2026' },
+  { label: 'Lucro operacional', value: formatCurrency(monthly.operationalProfit), note: 'Sem reserva de manutenção' },
+  { label: 'Horas confirmadas', value: `${formatNumber(monthly.confirmedHours, 2)}h`, note: `${monthly.workedDays} dias trabalhados` },
+  { label: 'Km confirmados', value: `${formatNumber(monthly.confirmedKm, 0)} km`, note: `${formatNumber(monthly.passengerKm, 2)} km com passageiro` },
+  { label: 'Corridas totais', value: String(monthly.totalTrips), note: `${formatNumber(monthly.tripsPerHour, 2)} corridas/h` },
+  { label: 'Ticket médio', value: formatCurrency(monthly.ticketAverage), note: `${formatNumber(monthly.margin, 1)}% margem operacional` }
+];
+
+const today = [
+  ['Bruto / hora', `${formatCurrency(latestDay.gross / latestDay.hours)}/h`],
+  ['Lucro / hora', `${formatCurrency(latestDay.profit / latestDay.hours)}/h`],
+  ['Bruto / km', `${formatCurrency(latestDay.gross / latestDay.km)}/km`],
+  ['Lucro / km', `${formatCurrency(latestDay.profit / latestDay.km)}/km`],
+  ['Ocupação por km', rideOccupancy ? `${formatNumber(rideOccupancy, 1)}%` : 'Sem dado'],
+  ['Ticket médio', formatCurrency(latestDay.gross / latestDay.trips)]
+];
+---
+<BaseLayout title="Dash Drive · MotoristaOPS">
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">{meta.source}</p>
+        <h1>Dash Drive</h1>
+        <p class="hero__lead">Painel operacional para transformar fechamento diário em decisão: receita, horas, km, ocupação, combustível e lucro operacional.</p>
+      </div>
+      <div class="hero__status" aria-label="status do snapshot">
+        <span>Snapshot</span>
+        <strong>{meta.month}</strong>
+        <small>Gerado em {meta.generatedAt}</small>
+      </div>
+    </section>
+
+    <section class="kpi-grid" aria-label="indicadores consolidados">
+      {kpis.map((kpi) => (
+        <article class="card kpi-card">
+          <span>{kpi.label}</span>
+          <strong>{kpi.value}</strong>
+          <small>{kpi.note}</small>
+        </article>
+      ))}
+    </section>
+
+    <section class="section-grid section-grid--wide">
+      <article class="card latest-card">
+        <div class="section-heading">
+          <span>Fechamento validado</span>
+          <h2>{latestDay.label}</h2>
+          <p>{latestDay.platform} · Turno {latestDay.shift}</p>
+        </div>
+
+        <div class="latest-main">
+          <div>
+            <span>Receita</span>
+            <strong>{formatCurrency(latestDay.gross)}</strong>
+          </div>
+          <div>
+            <span>Lucro operacional</span>
+            <strong>{formatCurrency(latestDay.profit)}</strong>
+          </div>
+          <div>
+            <span>Despesas operacionais</span>
+            <strong>{formatCurrency(latestDay.expense)}</strong>
+          </div>
+        </div>
+
+        <div class="metric-list">
+          {today.map(([label, value]) => (
+            <div>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </div>
+
+        <p class="note">{latestDay.notes}</p>
+      </article>
+
+      <aside class="card operation-card">
+        <div class="section-heading">
+          <span>Operação do dia</span>
+          <h2>Eficiência</h2>
+        </div>
+        <dl>
+          <div><dt>Viagens</dt><dd>{latestDay.trips}</dd></div>
+          <div><dt>Horas trabalhadas</dt><dd>{latestDay.hoursLabel}</dd></div>
+          <div><dt>Horas com passageiro</dt><dd>{latestDay.rideHoursLabel ?? 'Sem dado'}</dd></div>
+          <div><dt>Km rodados</dt><dd>{formatNumber(latestDay.km, 1)} km</dd></div>
+          <div><dt>Km com passageiro</dt><dd>{latestDay.passengerKm ? `${formatNumber(latestDay.passengerKm, 1)} km` : 'Sem dado'}</dd></div>
+          <div><dt>Km vazio</dt><dd>{kmEmpty !== null ? `${formatNumber(kmEmpty, 1)} km` : 'Sem dado'}</dd></div>
+          <div><dt>Consumo</dt><dd>{latestDay.fuelEfficiency ? `${formatNumber(latestDay.fuelEfficiency, 1)} km/L` : 'Sem dado'}</dd></div>
+          <div><dt>Etanol referência</dt><dd>{formatCurrency(monthly.fuelPrice)}/L</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="section-grid">
+      <article class="card insight-card">
+        <span>Leitura crítica</span>
+        <h2>O 30/07 fica correto quando o abastecimento sai do fechamento operacional.</h2>
+        <p>Com combustível estimado pelo consumo real do turno, o dia fecha em {formatCurrency(latestDay.profit)} de lucro operacional. Se o abastecimento integral entrasse como despesa do dia, o lucro/hora seria artificialmente derrubado.</p>
+      </article>
+      <article class="card insight-card muted">
+        <span>Risco aberto</span>
+        <h2>Reserva de manutenção ainda está fora do lucro.</h2>
+        <p>O painel ainda mostra lucro operacional. Para chegar no lucro real do carro, falta definir uma reserva por km para pneus, óleo, peças, limpeza pesada e depreciação.</p>
+      </article>
+    </section>
+
+    <section class="card table-card">
+      <div class="section-heading table-heading">
+        <div>
+          <span>Histórico recente</span>
+          <h2>Fechamentos lançados</h2>
+        </div>
+        <p>Ordenado do mais recente para o mais antigo.</p>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Plataforma</th>
+              <th>Bruto</th>
+              <th>Lucro</th>
+              <th>Horas</th>
+              <th>Km</th>
+              <th>Km passageiro</th>
+              <th>Viagens</th>
+              <th>Lucro/h</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedDays.map((day) => (
+              <tr>
+                <td>{day.label}</td>
+                <td>{day.platform}</td>
+                <td>{formatCurrency(day.gross)}</td>
+                <td>{formatCurrency(day.profit)}</td>
+                <td>{day.hoursLabel}</td>
+                <td>{formatNumber(day.km, 1)}</td>
+                <td>{day.passengerKm ? formatNumber(day.passengerKm, 1) : '—'}</td>
+                <td>{day.trips}</td>
+                <td>{formatCurrency(day.profit / day.hours)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
