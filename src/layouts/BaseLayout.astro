@@ -1,0 +1,17 @@
+---
+import '../styles/global.css';
+
+const { title = 'Dash Drive' } = Astro.props;
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Dashboard operacional MotoristaOPS para acompanhamento de receita, lucro, horas, km, corridas e eficiência." />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
