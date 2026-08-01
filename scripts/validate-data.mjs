@@ -7,7 +7,7 @@ const data = JSON.parse(fs.readFileSync(file, 'utf8'));
 const errors = [];
 const assert = (condition, message) => { if (!condition) errors.push(message); };
 
-assert(data.meta?.app === 'Dash Drive', 'meta.app inválido');
+assert(data.meta?.app === 'MotoristaOps', 'meta.app inválido');
 assert(data.monthly?.grossRevenue === 3823.16, `receita mensal divergente: ${data.monthly?.grossRevenue}`);
 assert(data.monthly?.operationalProfit === 3234, `lucro mensal divergente: ${data.monthly?.operationalProfit}`);
 assert(data.monthly?.daysWorked === 19, `dias trabalhados divergente: ${data.monthly?.daysWorked}`);

@@ -13,8 +13,8 @@
     "quality": "npm run validate:data && npm run build"
   },
   "dependencies": {
-    "astro": "^5.0.0",
-    "xlsx": "^0.18.5"
+    "astro": "^7.1.6",
+    "exceljs": "^4.4.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
@@ -22,5 +22,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
   }
 }
