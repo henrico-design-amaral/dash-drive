@@ -1,25 +1,28 @@
-# Dash Drive
+# MotoristaOps
 
-Dashboard operacional de motorista construído em Astro a partir do snapshot MotoristaOPS.
+Plataforma operacional e financeira para motoristas, construída em Astro e alimentada pela base MotoristaOps.
 
 ## Objetivo
 
-O Dash Drive é o painel público do fluxo MotoristaOPS. Depois de cada fechamento do dia, a planilha MotoristaOPS deve ser atualizada e este projeto deve receber o novo snapshot de dados antes da publicação.
+O MotoristaOps transforma fechamentos diários em leitura operacional: receita, horas, km, ocupação, combustível, despesas, lucro e histórico de desempenho.
 
 ## Stack
 
 - Astro Framework
 - TypeScript
-- CSS próprio, sem dependência de UI kit
+- CSS próprio
 - Dados estáticos versionados em `src/data/motoristaops.ts`
+- Pipeline Excel → JSON → validação → build → Hostinger
 
 ## Comandos
 
 ```bash
 npm install
 npm run dev
+npm run sync:data
+npm run validate:data
 npm run build
-npm run preview
+npm run quality
 ```
 
 ## Snapshot atual
@@ -47,7 +50,13 @@ Consolidado julho/2026:
 
 Todo fechamento diário deve atualizar duas frentes obrigatórias:
 
-1. Google Sheets MotoristaOPS.
-2. Site Dash Drive publicado.
+1. Google Sheets MotoristaOps.
+2. Site MotoristaOps publicado.
 
 Sem essa dupla validação, o fechamento fica incompleto.
+
+## Nome canônico
+
+- Produto: `MotoristaOps`
+- Repositório: `henrico-design-amaral/motoristaops`
+- Domínio planejado: `motoristaops.henrico.works`
