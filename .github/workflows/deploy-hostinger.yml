@@ -19,26 +19,38 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Install dependencies
-        run: npm install
-      - name: Validate committed data snapshot
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Validate data snapshot
         run: npm run validate:data
+
+      - name: Static analysis
+        run: npm run check
+
       - name: Security gate
         run: npm run security
+
       - name: Build Astro
         env:
           SITE_URL: https://motoristaops.henrico.works
         run: npm run build
+
       - name: Verify build output
         run: |
           test -d dist
           test -f dist/index.html
           test -f dist/data/motoristaops.json
+          grep -q "MotoristaOps" dist/index.html
+          grep -q "Painel financeiro e estratégico" dist/index.html
+
       - name: Ensure Hostinger secrets are configured
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
@@ -52,8 +64,10 @@ jobs:
           test -n "$HOSTINGER_PASSWORD"
           test -n "$HOSTINGER_PORT"
           test -n "$HOSTINGER_TARGET_DIR"
+
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy dist to Hostinger via SFTP
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
@@ -69,3 +83,17 @@ jobs:
           mirror --reverse --delete --verbose ./dist "$HOSTINGER_TARGET_DIR"
           bye
           EOF
+
+      - name: Production smoke test
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            body="$(curl --fail --silent --show-error --location --max-time 20 https://motoristaops.henrico.works/ || true)"
+            if printf '%s' "$body" | grep -q "MotoristaOps" && printf '%s' "$body" | grep -q "Painel financeiro e estratégico"; then
+              echo "Production smoke test passed on attempt $attempt."
+              exit 0
+            fi
+            echo "Production not ready on attempt $attempt; retrying in 10 seconds."
+            sleep 10
+          done
+          echo "Production smoke test failed."
+          exit 1
