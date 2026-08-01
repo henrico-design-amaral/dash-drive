@@ -14,40 +14,31 @@ jobs:
   build-and-deploy:
     name: Build and deploy MotoristaOps
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
-      - name: Install locked dependencies
-        run: npm ci
-
+      - name: Install dependencies
+        run: npm install
       - name: Validate committed data snapshot
         run: npm run validate:data
-
       - name: Security gate
         run: npm run security
-
       - name: Build Astro
         env:
           SITE_URL: https://motoristaops.henrico.works
         run: npm run build
-
       - name: Verify build output
         run: |
           test -d dist
           test -f dist/index.html
           test -f dist/data/motoristaops.json
-
       - name: Ensure Hostinger secrets are configured
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
@@ -61,10 +52,8 @@ jobs:
           test -n "$HOSTINGER_PASSWORD"
           test -n "$HOSTINGER_PORT"
           test -n "$HOSTINGER_TARGET_DIR"
-
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
-
       - name: Deploy dist to Hostinger via SFTP
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
