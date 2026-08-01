@@ -2,5 +2,8 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://dash-driver.henricoamaral.chatgpt.site/'
+  site: process.env.SITE_URL || 'https://dash-drive.henrico.works',
+  build: {
+    format: 'directory'
+  }
 });
