@@ -26,13 +26,13 @@ const today = [
   ['Ticket médio', formatCurrency(latestDay.gross / latestDay.trips)]
 ];
 ---
-<BaseLayout title="Dash Drive · MotoristaOPS">
+<BaseLayout title="MotoristaOps · Dashboard operacional">
   <main class="page-shell">
     <section class="hero">
       <div class="hero__copy">
         <p class="eyebrow">{meta.source}</p>
-        <h1>Dash Drive</h1>
-        <p class="hero__lead">Painel operacional para transformar fechamento diário em decisão: receita, horas, km, ocupação, combustível e lucro operacional.</p>
+        <h1>MotoristaOps</h1>
+        <p class="hero__lead">Plataforma operacional para transformar fechamento diário em decisão: receita, horas, km, ocupação, combustível e lucro operacional.</p>
       </div>
       <div class="hero__status" aria-label="status do snapshot">
         <span>Snapshot</span>
@@ -60,26 +60,14 @@ const today = [
         </div>
 
         <div class="latest-main">
-          <div>
-            <span>Receita</span>
-            <strong>{formatCurrency(latestDay.gross)}</strong>
-          </div>
-          <div>
-            <span>Lucro operacional</span>
-            <strong>{formatCurrency(latestDay.profit)}</strong>
-          </div>
-          <div>
-            <span>Despesas operacionais</span>
-            <strong>{formatCurrency(latestDay.expense)}</strong>
-          </div>
+          <div><span>Receita</span><strong>{formatCurrency(latestDay.gross)}</strong></div>
+          <div><span>Lucro operacional</span><strong>{formatCurrency(latestDay.profit)}</strong></div>
+          <div><span>Despesas operacionais</span><strong>{formatCurrency(latestDay.expense)}</strong></div>
         </div>
 
         <div class="metric-list">
           {today.map(([label, value]) => (
-            <div>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
+            <div><span>{label}</span><strong>{value}</strong></div>
           ))}
         </div>
 
@@ -87,10 +75,7 @@ const today = [
       </article>
 
       <aside class="card operation-card">
-        <div class="section-heading">
-          <span>Operação do dia</span>
-          <h2>Eficiência</h2>
-        </div>
+        <div class="section-heading"><span>Operação do dia</span><h2>Eficiência</h2></div>
         <dl>
           <div><dt>Viagens</dt><dd>{latestDay.trips}</dd></div>
           <div><dt>Horas trabalhadas</dt><dd>{latestDay.hoursLabel}</dd></div>
@@ -119,39 +104,16 @@ const today = [
 
     <section class="card table-card">
       <div class="section-heading table-heading">
-        <div>
-          <span>Histórico recente</span>
-          <h2>Fechamentos lançados</h2>
-        </div>
+        <div><span>Histórico recente</span><h2>Fechamentos lançados</h2></div>
         <p>Ordenado do mais recente para o mais antigo.</p>
       </div>
       <div class="table-scroll">
         <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Plataforma</th>
-              <th>Bruto</th>
-              <th>Lucro</th>
-              <th>Horas</th>
-              <th>Km</th>
-              <th>Km passageiro</th>
-              <th>Viagens</th>
-              <th>Lucro/h</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Data</th><th>Plataforma</th><th>Bruto</th><th>Lucro</th><th>Horas</th><th>Km</th><th>Km passageiro</th><th>Viagens</th><th>Lucro/h</th></tr></thead>
           <tbody>
             {sortedDays.map((day) => (
               <tr>
-                <td>{day.label}</td>
-                <td>{day.platform}</td>
-                <td>{formatCurrency(day.gross)}</td>
-                <td>{formatCurrency(day.profit)}</td>
-                <td>{day.hoursLabel}</td>
-                <td>{formatNumber(day.km, 1)}</td>
-                <td>{day.passengerKm ? formatNumber(day.passengerKm, 1) : '—'}</td>
-                <td>{day.trips}</td>
-                <td>{formatCurrency(day.profit / day.hours)}</td>
+                <td>{day.label}</td><td>{day.platform}</td><td>{formatCurrency(day.gross)}</td><td>{formatCurrency(day.profit)}</td><td>{day.hoursLabel}</td><td>{formatNumber(day.km, 1)}</td><td>{day.passengerKm ? formatNumber(day.passengerKm, 1) : '—'}</td><td>{day.trips}</td><td>{formatCurrency(day.profit / day.hours)}</td>
               </tr>
             ))}
           </tbody>
