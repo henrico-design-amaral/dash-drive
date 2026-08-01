@@ -1,9 +1,9 @@
 {
-  "name": "dash-drive",
+  "name": "motoristaops",
   "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "Dashboard operacional e financeiro para motoristas, alimentado pela base MotoristaOPS.",
+  "description": "MotoristaOps: plataforma operacional e financeira para motoristas, alimentada pela base MotoristaOps.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
