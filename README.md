@@ -59,4 +59,8 @@ Sem essa dupla validação, o fechamento fica incompleto.
 
 - Produto: `MotoristaOps`
 - Repositório: `henrico-design-amaral/motoristaops`
-- Domínio planejado: `motoristaops.henrico.works`
+- Domínio: `https://motoristaops.henrico.works`
+
+## Deploy
+
+Publicação automática na Hostinger por GitHub Actions a cada atualização da branch `main`.
