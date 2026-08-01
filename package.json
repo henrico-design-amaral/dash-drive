@@ -1,16 +1,17 @@
 {
   "name": "motoristaops",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "type": "module",
   "description": "MotoristaOps: painel financeiro e estratégico diário para motoristas.",
   "scripts": {
     "dev": "astro dev",
+    "check": "astro check",
     "build": "astro build",
     "preview": "astro preview",
     "sync:data": "node scripts/sync-data.mjs",
     "validate:data": "node scripts/validate-data.mjs",
-    "quality": "npm run sync:data && npm run validate:data && npm run build",
+    "quality": "npm run validate:data && npm run check && npm run build",
     "security": "npm audit --omit=dev"
   },
   "dependencies": {
