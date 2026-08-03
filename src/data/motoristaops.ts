@@ -16,65 +16,72 @@ export type DriverDay = {
   trips: number;
   fuelCost: number;
   fuelEfficiency?: number;
+  fuelPrice?: number;
+  fuelPurchase?: number;
+  fuelLiters?: number;
+  cashExpense?: number;
+  cashBalance?: number;
   notes?: string;
 };
 
 export const meta = {
   app: 'Dash Drive',
   source: 'MotoristaOPS — Dashboard Financeiro e Logístico',
-  month: 'julho/2026',
-  generatedAt: '2026-07-30T22:08:00-03:00',
+  month: 'agosto/2026',
+  generatedAt: '2026-08-02T22:35:00-03:00',
   status: 'snapshot-from-excel',
   rules: [
     'Todo fechamento diário deve atualizar a planilha MotoristaOPS e o site Dash Drive.',
     'Lucro operacional ainda não inclui reserva de manutenção por km.',
-    'Quando houver abastecimento feito antes do turno, o fechamento operacional usa consumo estimado do dia, não o caixa total abastecido.'
+    'Abastecimento é saída de caixa; combustível operacional é calculado pelo consumo do dia para evitar dupla contagem.'
   ]
 };
 
 export const monthly = {
-  gross: 3823.16,
-  operationalProfit: 3234.00,
-  operationalExpense: 589.16,
-  cashBalance: 3814.16,
-  workedDays: 19,
-  confirmedHours: 75.65,
-  confirmedKm: 1368,
-  passengerKm: 597.72,
-  totalTrips: 232,
-  ticketAverage: 16.48,
-  revenuePerHour: 50.54,
-  profitPerHour: 42.75,
-  revenuePerKm: 2.79,
-  profitPerKm: 2.36,
-  kmOccupancy: 43.7,
-  tripsPerHour: 3.07,
-  margin: 84.6,
-  bestWeekday: 'Segunda',
+  gross: 141.52,
+  operationalProfit: 83.77,
+  operationalExpense: 57.75,
+  cashBalance: 72.23,
+  workedDays: 1,
+  confirmedHours: 2.6667,
+  confirmedKm: 49,
+  passengerKm: 0,
+  totalTrips: 13,
+  ticketAverage: 10.89,
+  revenuePerHour: 53.07,
+  profitPerHour: 31.41,
+  revenuePerKm: 2.89,
+  profitPerKm: 1.71,
+  kmOccupancy: 0,
+  tripsPerHour: 4.88,
+  margin: 59.2,
+  bestWeekday: 'Domingo',
   topPlatform: 'Uber',
-  fuelPrice: 3.34,
-  weightedEfficiency: 8.46
+  fuelPrice: 3.25,
+  weightedEfficiency: 7.0
 };
 
 export const latestDay: DriverDay = {
-  date: '2026-07-30',
-  label: '30/07/2026',
-  weekday: 'Qui',
-  shift: 'Misto',
+  date: '2026-08-02',
+  label: '02/08/2026',
+  weekday: 'Dom',
+  shift: 'Não informado',
   platform: 'Uber',
-  gross: 347.31,
-  profit: 284.78,
-  expense: 62.53,
-  hours: 9.0833333333,
-  hoursLabel: '9h05',
-  rideHours: 7.3833333333,
-  rideHoursLabel: '7h23',
-  km: 161,
-  passengerKm: 140.4,
-  trips: 21,
-  fuelCost: 62.53,
-  fuelEfficiency: 8.6,
-  notes: 'Fechamento corrigido: abastecimento, lavagem e refeição removidos do resultado operacional do dia. Combustível calculado por consumo operacional.'
+  gross: 141.52,
+  profit: 83.77,
+  expense: 57.75,
+  hours: 2.6666666667,
+  hoursLabel: '2h40',
+  km: 49,
+  trips: 13,
+  fuelCost: 22.75,
+  fuelEfficiency: 7.0,
+  fuelPrice: 3.25,
+  fuelPurchase: 34.29,
+  fuelLiters: 10.55,
+  cashExpense: 69.29,
+  cashBalance: 72.23,
+  notes: 'Fechamento confirmado: lavagem de R$ 35,00 como despesa operacional; abastecimento de R$ 34,29 registrado no caixa. Combustível operacional estimado em R$ 22,75 pelo consumo de 7 km/L.'
 };
 
 export const days: DriverDay[] = [
@@ -88,6 +95,7 @@ export const days: DriverDay[] = [
   { date: '2026-07-27', label: '27/07/2026', weekday: 'Seg', shift: 'Misto', platform: 'Uber', gross: 510.27, profit: 419.12, expense: 91.15, hours: 12.3167, hoursLabel: '12h19', km: 248.5, trips: 23, fuelCost: 91.15, fuelEfficiency: 8.8 },
   { date: '2026-07-28', label: '28/07/2026', weekday: 'Ter', shift: 'Não informado', platform: 'Uber', gross: 117.01, profit: 100.38, expense: 16.63, hours: 2.5, hoursLabel: '2h30', km: 44.8, trips: 4, fuelCost: 16.63, fuelEfficiency: 9.0 },
   { date: '2026-07-29', label: '29/07/2026', weekday: 'Qua', shift: 'Não informado', platform: 'Uber', gross: 415.43, profit: 335.77, expense: 79.66, hours: 10.3667, hoursLabel: '10h22', km: 205.1, trips: 24, fuelCost: 79.66, fuelEfficiency: 8.6 },
+  { date: '2026-07-30', label: '30/07/2026', weekday: 'Qui', shift: 'Misto', platform: 'Uber', gross: 347.31, profit: 284.78, expense: 62.53, hours: 9.0833333333, hoursLabel: '9h05', rideHours: 7.3833333333, rideHoursLabel: '7h23', km: 161, passengerKm: 140.4, trips: 21, fuelCost: 62.53, fuelEfficiency: 8.6 },
   latestDay
 ];
 
