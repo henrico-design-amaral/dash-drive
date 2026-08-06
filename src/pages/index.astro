@@ -33,7 +33,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <section class="workspace">
       <header class="workspace-header">
         <div><p class="eyebrow">MotoristaOps</p><h1>Painel diário</h1><p>Receita, lucro, custos, metas e eficiência em uma única leitura.</p></div>
-        <div class="header-actions"><label class="button button--ghost">Importar Excel<input id="excel-file" type="file" accept=".xlsx" hidden /></label><button id="export-data" class="button">Exportar CSV</button></div>
+        <div class="header-actions"><a class="button button--gold" href="/importar-uber">Importar vídeo Uber</a><label class="button button--ghost">Importar Excel<input id="excel-file" type="file" accept=".xlsx" hidden /></label><button id="export-data" class="button">Exportar CSV</button></div>
       </header>
 
       <section id="overview" class="workspace-section">
@@ -91,7 +91,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <section id="imports" class="workspace-section" hidden>
         <div class="section-title"><div><span>Dados</span><h2>Importar e exportar</h2></div></div>
-        <div class="dashboard-grid dashboard-grid--balanced"><article class="panel import-card"><h3>Importar Excel</h3><p>Use a planilha MotoristaOps; a aba Operação Diária será conciliada pela data.</p><label class="button button--gold">Selecionar XLSX<input id="excel-file-secondary" type="file" accept=".xlsx" hidden/></label></article><article class="panel import-card"><h3>Exportar histórico</h3><p>Gere uma cópia CSV dos fechamentos persistidos.</p><button id="export-data-secondary" class="button">Exportar CSV</button></article></div>
+        <div class="dashboard-grid dashboard-grid--balanced">
+          <article class="panel import-card"><h3>Importar gravação da Uber</h3><p>Envie uma gravação de tela, extraia os dados por OCR e revise tudo antes de salvar.</p><a class="button button--gold" href="/importar-uber">Abrir importador de vídeo</a></article>
+          <article class="panel import-card"><h3>Importar Excel</h3><p>Use a planilha MotoristaOps; a aba Operação Diária será conciliada pela data.</p><label class="button">Selecionar XLSX<input id="excel-file-secondary" type="file" accept=".xlsx" hidden/></label></article>
+        </div>
+        <div class="dashboard-grid dashboard-grid--balanced"><article class="panel import-card"><h3>Exportar histórico</h3><p>Gere uma cópia CSV dos fechamentos persistidos.</p><button id="export-data-secondary" class="button">Exportar CSV</button></article><article class="panel import-card"><h3>Fluxo recomendado</h3><p>Grave a tela rolando devagar, importe, revise datas e valores e complete horas, quilômetros e custos no fechamento diário.</p></article></div>
       </section>
     </section>
   </div>
