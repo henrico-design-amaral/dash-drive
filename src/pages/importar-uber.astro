@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Importar gravação da Uber · MotoristaOps">
+  <main class="uber-import-shell">
+    <header class="uber-import-header">
+      <div>
+        <p class="eyebrow">MotoristaOps · Importador inteligente</p>
+        <h1>Transforme uma gravação da Uber em dados revisáveis.</h1>
+        <p>O vídeo é processado localmente no navegador. Nenhum quadro é enviado para terceiros pelo MotoristaOps.</p>
+      </div>
+      <a class="button" href="/">Voltar ao painel</a>
+    </header>
+
+    <section id="import-auth-warning" class="panel" hidden>
+      <h2>Entre no MotoristaOps primeiro</h2>
+      <p class="muted">A importação só pode ser concluída quando houver uma sessão autenticada.</p>
+      <a class="button button--gold" href="/">Ir para o login</a>
+    </section>
+
+    <section id="import-workspace" class="uber-import-grid" hidden>
+      <article class="panel uber-import-card">
+        <span class="step-label">1 · Gravação</span>
+        <h2>Selecione o vídeo</h2>
+        <p class="muted">Use MP4, MOV ou WEBM. Grave a tela rolando lentamente, sem saltos bruscos.</p>
+        <label class="uber-dropzone" for="uber-video-file">
+          <strong>Escolher gravação</strong>
+          <span>ou arraste o arquivo para esta área</span>
+          <input id="uber-video-file" type="file" accept="video/mp4,video/quicktime,video/webm" hidden />
+        </label>
+        <dl id="video-metadata" class="uber-metadata"></dl>
+        <video id="uber-video" playsinline muted preload="metadata" hidden></video>
+        <canvas id="uber-frame-canvas" hidden></canvas>
+      </article>
+
+      <article class="panel uber-import-card">
+        <span class="step-label">2 · Leitura</span>
+        <h2>Extração e OCR</h2>
+        <p class="muted">O sistema coleta quadros em intervalos regulares, ignora imagens muito parecidas e procura datas, valores e quantidade de viagens.</p>
+        <label>Intervalo entre quadros
+          <select id="frame-interval">
+            <option value="1">1 segundo</option>
+            <option value="1.5" selected>1,5 segundo</option>
+            <option value="2">2 segundos</option>
+            <option value="3">3 segundos</option>
+          </select>
+        </label>
+        <button id="process-uber-video" class="button button--gold" type="button" disabled>Processar gravação</button>
+        <div class="uber-progress" aria-live="polite">
+          <div><span id="progress-label">Aguardando vídeo</span><strong id="progress-value">0%</strong></div>
+          <progress id="progress-bar" max="100" value="0"></progress>
+        </div>
+        <p class="muted uber-privacy">A biblioteca de OCR é carregada somente quando você inicia o processamento.</p>
+      </article>
+    </section>
+
+    <section id="review-section" class="panel uber-review" hidden>
+      <div class="section-title">
+        <div><span>3 · Revisão obrigatória</span><h2>Dados encontrados</h2></div>
+        <p id="review-summary">Nenhum dado processado.</p>
+      </div>
+      <div class="table-panel uber-review-table">
+        <table>
+          <thead><tr><th>Importar</th><th>Data</th><th>Receita Uber</th><th>Viagens</th><th>Confiança</th><th>Origem</th></tr></thead>
+          <tbody id="uber-review-rows"></tbody>
+        </table>
+      </div>
+      <div class="uber-review-actions">
+        <button id="add-review-row" class="button" type="button">Adicionar linha</button>
+        <button id="import-reviewed-data" class="button button--gold" type="button">Importar dados revisados</button>
+      </div>
+    </section>
+
+    <section id="import-log" class="panel uber-log" hidden aria-live="polite"></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+  <script>
+    import '../scripts/uber-video-import.ts';
+  </script>
+</BaseLayout>
