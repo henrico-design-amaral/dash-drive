@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="MotoristaOps · Histórico de importações">
+  <main class="history-shell">
+    <header class="history-header">
+      <div><p class="eyebrow">MotoristaOps · Auditoria local</p><h1>Histórico de importações</h1><p>Registro das importações realizadas neste navegador. Limpar este histórico não altera os fechamentos já salvos.</p></div>
+      <div class="header-actions"><a class="button" href="/">Voltar ao painel</a><a class="button button--gold" href="/importar-uber">Importar vídeo Uber</a></div>
+    </header>
+    <section class="panel import-history-panel">
+      <div class="panel-head"><div><span>Processamentos</span><h2>Últimas importações</h2></div><button id="clear-import-history" class="button" type="button">Limpar histórico</button></div>
+      <p id="import-history-summary" class="muted"></p>
+      <div class="table-panel"><table><thead><tr><th>Quando</th><th>Origem</th><th>Arquivo</th><th>Status</th><th>Importados</th><th>Ignorados</th><th>Erros</th><th>Detalhe</th></tr></thead><tbody id="import-history-rows"></tbody></table></div>
+    </section>
+  </main>
+  <script>import '../scripts/import-history-view.ts';</script>
+</BaseLayout>
+<style>
+  .history-shell{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:32px 0 56px}.history-header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:20px}.history-header h1{margin:0;font-size:clamp(2.2rem,6vw,4.8rem);line-height:.92;letter-spacing:-.06em}.history-header p{max-width:720px;color:var(--muted);line-height:1.6}.import-history-panel{margin-top:12px}.import-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800}.import-status--success{background:#173d27;color:#8ee7ac}.import-status--partial{background:#493b17;color:#ffd96c}.import-status--error{background:#4b2020;color:#ffaaaa}@media(max-width:760px){.history-header{display:block}.header-actions{margin-top:18px}}
+</style>
