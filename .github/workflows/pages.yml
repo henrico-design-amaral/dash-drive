@@ -1,4 +1,4 @@
-name: Validate Dash Drive
+name: Validate MotoristaOps
 
 on:
   push:
@@ -22,19 +22,33 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Validate data snapshot
         run: npm run validate:data
 
+      - name: Static analysis
+        run: npm run check
+
+      - name: Security gate
+        run: npm run security
+
       - name: Build Astro
         run: npm run build
         env:
-          SITE_URL: https://dash-drive.henrico.works
+          SITE_URL: https://motoristaops.henrico.works
+
+      - name: Verify build output
+        run: |
+          test -d dist
+          test -f dist/index.html
+          test -f dist/importar-uber/index.html
+          test -f dist/historico-importacoes/index.html
+          grep -q "MotoristaOps" dist/index.html
 
       - name: Upload static build
         uses: actions/upload-artifact@v4
         with:
-          name: dash-drive-dist
+          name: motoristaops-dist
           path: dist
           if-no-files-found: error
